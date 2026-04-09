@@ -217,7 +217,6 @@
       color: var(--text);
     }
 
-    /* Loading */
     .catalog-loading {
       text-align: center;
       padding: 4rem 2rem;
@@ -698,12 +697,8 @@
   <div class="toast" id="toast">¡Consulta enviada! Te respondo pronto 🤍</div>
 
   <script>
-    // ─────────────────────────────────────────────
-    //  CONFIGURACIÓN — solo tocá esta parte
-    // ─────────────────────────────────────────────
     const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTRTL0Mpj-YsHBFn6rJlkpLmcKakFGHc1YC8liFgRriXUj5OTvlsb_4dzONJ8Bvn47LtEy-1K3irz1g/pub?gid=0&single=true&output=csv';
 
-    // Ícono y descripción para cada categoría
     const catMeta = {
       animados:  { icon: '🎌', desc: 'Anime, cartoons y personajes animados de todos los estilos.' },
       futbol:    { icon: '⚽', desc: 'Clubes, selecciones y jugadores del fútbol local e internacional.' },
@@ -716,7 +711,6 @@
       vintage:   { icon: '📻', desc: 'Estética retro, colores vibrantes y diseños que no envejecen.' },
     };
 
-    // Nombre visible para cada categoría
     const catLabels = {
       animados:  'Animados',
       futbol:    'Fútbol',
@@ -729,14 +723,8 @@
       vintage:   'Vintage General',
     };
 
-    // ─────────────────────────────────────────────
-    //  ESTADO
-    // ─────────────────────────────────────────────
     let catalogData = {};
 
-    // ─────────────────────────────────────────────
-    //  PARSEAR CSV
-    // ─────────────────────────────────────────────
     function parseCSV(text) {
       const lines = text.trim().split('\n');
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\r/g, ''));
@@ -761,9 +749,6 @@
       return grouped;
     }
 
-    // ─────────────────────────────────────────────
-    //  RENDER CATEGORÍAS
-    // ─────────────────────────────────────────────
     function renderCategories(filter) {
       const grid = document.getElementById('catGrid');
       const cats = Object.keys(catalogData);
@@ -788,9 +773,6 @@
       }).join('');
     }
 
-    // ─────────────────────────────────────────────
-    //  RENDER FILTROS
-    // ─────────────────────────────────────────────
     function renderFilters() {
       const bar = document.getElementById('filterBar');
       bar.innerHTML = `<button class="filter-btn active" onclick="filterCat('todos', this)">Todos</button>`;
@@ -800,9 +782,6 @@
       });
     }
 
-    // ─────────────────────────────────────────────
-    //  RENDER SELECT CONTACTO
-    // ─────────────────────────────────────────────
     function renderContactSelect() {
       const sel = document.getElementById('contactSelect');
       sel.innerHTML = '<option value="">Seleccioná...</option>';
@@ -813,9 +792,6 @@
       sel.innerHTML += '<option value="personalizada">Personalizada</option>';
     }
 
-    // ─────────────────────────────────────────────
-    //  CARGAR DESDE GOOGLE SHEETS
-    // ─────────────────────────────────────────────
     async function loadCatalog() {
       try {
         const res  = await fetch(SHEET_CSV_URL);
@@ -837,9 +813,6 @@
       }
     }
 
-    // ─────────────────────────────────────────────
-    //  FILTRAR
-    // ─────────────────────────────────────────────
     function filterCat(cat, btn) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -847,9 +820,6 @@
       closeStickers();
     }
 
-    // ─────────────────────────────────────────────
-    //  MOSTRAR STICKERS
-    // ─────────────────────────────────────────────
     function showStickers(cat) {
       const stickers = catalogData[cat] || [];
       const label    = catLabels[cat] || cat;
@@ -860,9 +830,9 @@
 
       const grid = document.getElementById('stickersGrid');
       grid.innerHTML = stickers.map((s, i) => {
-        const skId  = `sk_${cat}_${i}`;
+        const skId   = `sk_${cat}_${i}`;
         const imgUrl = s.imagen_id
-          ? `https://drive.google.com/uc?export=view&id=${s.imagen_id}`
+          ? `https://lh3.googleusercontent.com/d/${s.imagen_id}`
           : '';
 
         return `
@@ -896,18 +866,12 @@
       sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ─────────────────────────────────────────────
-    //  VOLVER
-    // ─────────────────────────────────────────────
     function closeStickers() {
       document.getElementById('stickersSection').classList.remove('visible');
       document.getElementById('catGrid').style.display = '';
       document.querySelector('.filter-bar').style.display = '';
     }
 
-    // ─────────────────────────────────────────────
-    //  FORMULARIO
-    // ─────────────────────────────────────────────
     function handleForm(e) {
       e.preventDefault();
       const toast = document.getElementById('toast');
@@ -916,9 +880,6 @@
       e.target.reset();
     }
 
-    // ─────────────────────────────────────────────
-    //  INIT
-    // ─────────────────────────────────────────────
     loadCatalog();
   </script>
 </body>
